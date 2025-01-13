@@ -1,6 +1,5 @@
 package com.book.inventory.app.controller;
 
-import com.book.inventory.app.model.Book;
 import com.book.inventory.app.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +15,8 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping
-    public ResponseEntity<List<Book>> getBooksByAuthor(@RequestParam("author") String author) {
-        List<Book> books = bookService.getBooksByAuthor(author);
+    public ResponseEntity<List<BookResponse>> getBooksByAuthor(@RequestParam("author") String author) {
+        List<BookResponse> books = bookService.getBooksByAuthor(author);
         if (books.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -25,8 +24,14 @@ public class BookController {
     }
 
     @PostMapping
-    public Book createBook(@RequestBody Book book) {
-        return bookService.createBook(book);
+    public ResponseEntity<BookRequest> createBook(@RequestBody BookRequest book) {
+        if (!book.validBookRequest()) {
+            book.setTitle("Title is required");
+            book.setAuthor("Author is required");
+            book.setPublishedDate("PublishedDate must be greater than 1000");
+            return ResponseEntity.badRequest().body(book);
+        }
+        return ResponseEntity.ok().body(bookService.createBook(book));
     }
 
 }

@@ -10,8 +10,8 @@ import java.util.TimeZone;
 @Configuration
 public class AppConfig {
 
-    @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jacksonObjectMapperBuilderCustomizer() {
-        return builder -> builder.timeZone(TimeZone.getTimeZone(ZoneId.of("Asia/Bangkok")));
-    }
+    //@Bean
+    //public Jackson2ObjectMapperBuilderCustomizer jacksonObjectMapperBuilderCustomizer() {
+        //return builder -> builder.timeZone(TimeZone.getTimeZone(ZoneId.of("Asia/Bangkok")));
+    //}
 }

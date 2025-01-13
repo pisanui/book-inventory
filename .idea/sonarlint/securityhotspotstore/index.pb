@@ -17,12 +17,8 @@ Q.idea/sonarlint/securityhotspotstore/8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a057
 .gitattributes,2/4/24139dae656713ba861751fb2c2ac38839349a7a
 8
 mvnw.cmd,1/f/1f1763f358c257ea3515417352b82b0165647ad1
-y
-Isrc/main/java/com/book/inventory/app/BookApplication/BookApplication.java,b/e/be7c955114170adadc07572f0be27f7a48b862a9
 w
 G.idea/sonarlint/issuestore/8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d,b/4/b4a0b63ce8560bbc5de0f9995c20cc861dc2adb3
-~
-Nsrc/test/java/com/book/inventory/app/BookApplication/BookApplicationTests.java,6/c/6c5a38d14a7115900ea87da30e013aa058926d26
 ]
 -.idea/sonarlint/securityhotspotstore/index.pb,8/8/88a9255124c95bdc913197c120a8d560edc59c8e
 4
@@ -65,3 +61,9 @@ w
 G.idea/sonarlint/issuestore/3/2/32e074f71d16c1e88ac02aa83592ca6ad1fd98a8,6/c/6c12c046619028da98e2502918e6e119bd2491c2
 Å
 Q.idea/sonarlint/securityhotspotstore/4/4/442292b8a7efeabbe4cc176709b833b1792140ec,2/c/2cabb939da04d3de3a200bf2b575690e1a16316d
+d
+4src/main/java/com/book/inventory/app/CommonUtil.java,a/0/a093560e95c37aa19e2209025b5d8f789a35b72b
+p
+@src/main/java/com/book/inventory/app/controller/BookRequest.java,3/4/34b8f22310792e4f92d666adace7ee8b121a66ce
+q
+Asrc/main/java/com/book/inventory/app/controller/BookResponse.java,8/7/8740c5ebfba1d7d11dd7505b0f065994d328fce9
