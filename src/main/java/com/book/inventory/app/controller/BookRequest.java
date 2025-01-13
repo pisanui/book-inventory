@@ -49,7 +49,7 @@ public class BookRequest {
     public boolean validPublishedDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(publishedDate, formatter);
-        return localDate.getYear() > 1000;
+        return localDate.getYear() > 1000 && localDate.getYear() <= LocalDate.now().getYear() + 543 ;
     }
 
     public boolean validBookRequest() {
