@@ -89,13 +89,37 @@ class BookControllerTest {
     }
 
     @Test
-    void createBookWithValidatePublishedDate() {
+    void createBookWithValidatePublishedDateLT() {
         BookRequest book = new BookRequest();
         book.setTitle("test");
         book.setAuthor("test");
         book.setPublishedDate("0500-01-01");
         ResponseEntity<BookRequest> response = restTemplate.postForEntity("/books", book, BookRequest.class);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+    }
+
+    @Test
+    void createBookWithValidatePublishedDateGT() {
+        BookRequest book = new BookRequest();
+        book.setTitle("test");
+        book.setAuthor("test");
+        book.setPublishedDate("2569-01-01");
+        ResponseEntity<BookRequest> response = restTemplate.postForEntity("/books", book, BookRequest.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+    }
+
+
+
+    @Test
+    void createBookWithValidatePublishedDate() {
+        BookRequest book = new BookRequest();
+        book.setTitle("test");
+        book.setAuthor("test");
+        book.setPublishedDate("2569-01-40");
+        ResponseEntity<BookRequest> response = restTemplate.postForEntity("/books", book, BookRequest.class);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertNotNull(response.getBody());
     }
 }
