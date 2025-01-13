@@ -7,18 +7,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-
-
-import java.util.Date;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@ActiveProfiles("test")
+@ActiveProfiles("test")
 class BookControllerTest {
 
     @Autowired
@@ -34,17 +36,66 @@ class BookControllerTest {
 
     @Test
     void getBooksByAuthor() {
-    }
-
-    @Test
-    void createBook() {
         Book book = new Book();
         book.setTitle("Ready to read");
         book.setAuthor("The chain");
-        book.setPublishedDate(new Date());
-        ResponseEntity<Book> response = restTemplate.postForEntity("/books", book, Book.class);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        book.setPublishedDate(ZonedDateTime.now());
+        bookRepository.save(book);
+        ResponseEntity<List<BookResponse>> response = restTemplate.exchange(
+                "/books?author=The chain",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>() {}
+        );
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertNotNull(response.getBody().getId());
+        assertNotNull(response.getBody().get(0).getAuthor());
+        assertEquals(book.getAuthor(), response.getBody().get(0).getAuthor());
+    }
+
+    @Test
+    void createBookSuccessful() {
+        BookRequest book = new BookRequest();
+        book.setTitle("Ready to read");
+        book.setAuthor("God chain");
+        book.setPublishedDate("2568-01-01");
+        ResponseEntity<BookRequest> response = restTemplate.postForEntity("/books", book, BookRequest.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(book.getAuthor(), response.getBody().getAuthor());
+        assertEquals(1, bookRepository.findAll().size());
+    }
+
+    @Test
+    void createBookWithValidateTitle() {
+        BookRequest book = new BookRequest();
+        book.setTitle("");
+        book.setAuthor("test");
+        book.setPublishedDate("2568-01-01");
+        ResponseEntity<BookRequest> response = restTemplate.postForEntity("/books", book, BookRequest.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+    }
+
+    @Test
+    void createBookWithValidateAuthor() {
+        BookRequest book = new BookRequest();
+        book.setTitle("test");
+        book.setAuthor("");
+        book.setPublishedDate("2568-01-01");
+        ResponseEntity<BookRequest> response = restTemplate.postForEntity("/books", book, BookRequest.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+    }
+
+    @Test
+    void createBookWithValidatePublishedDate() {
+        BookRequest book = new BookRequest();
+        book.setTitle("test");
+        book.setAuthor("test");
+        book.setPublishedDate("0500-01-01");
+        ResponseEntity<BookRequest> response = restTemplate.postForEntity("/books", book, BookRequest.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
     }
 }
